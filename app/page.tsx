@@ -7,20 +7,20 @@ export default function Home() {
     <div className="flex flex-col">
       <section className="relative overflow-hidden text-white">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-[30%_center] sm:bg-center"
           style={{ backgroundImage: "url('/WhatsApp Image 2026-04-10 at 15.52.58.jpeg')" }}
         />
-        <div className="absolute inset-0 bg-slate-950/60" />
-        <div className="relative px-4 sm:px-12 lg:px-16 py-16 sm:py-24 min-h-[60vh] flex items-end">
-          <div className="w-full max-w-lg pb-4">
-              <div className="space-y-6">
+        <div className="absolute inset-0 bg-slate-950/80" />
+        <div className="relative px-4 sm:px-12 lg:px-16 py-20 sm:py-28 min-h-[70vh] flex items-end">
+          <div className="w-full max-w-lg pb-6">
+              <div className="space-y-5">
                 <h1 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">Rakija, Likeri i Voće s dušom naše obitelji</h1>
-                <p className="max-w-2xl text-lg leading-8 text-slate-300">
+                <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
                   Dobrodošli u OPG i DESTILERIJU MRAZ, gdje tradicija susreće prirodnu kvalitetu. S našim proizvodima
                   donosimo autentičan okus domaće zagorske prirode izravno na vaš stol.
                 </p>
               </div>
-              <div className="flex flex-col gap-4 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Link
                   href="/products"
                   className="inline-flex items-center justify-center rounded-full bg-amber-500 px-8 py-3 text-base font-semibold text-slate-950 shadow-lg shadow-amber-500/30 hover:bg-amber-400 transition"
