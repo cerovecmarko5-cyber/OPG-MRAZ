@@ -1,17 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../auth';
-import { getSupabase } from '../../../lib/supabase';
+import { put, list, head } from '@vercel/blob';
+
+const POSTS_BLOB = 'posts/posts.json';
+
+async function readPosts() {
+  try {
+    const { blobs } = await list({ prefix: 'posts/posts.json' });
+    if (!blobs.length) return [];
+    const res = await fetch(blobs[0].url);
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
+async function writePosts(posts: object[]) {
+  await put(POSTS_BLOB, JSON.stringify(posts), {
+    access: 'public',
+    contentType: 'application/json',
+    allowOverwrite: true,
+  });
+}
 
 // GET - dohvati sve objave (javno)
 export async function GET() {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data);
+  const posts = await readPosts();
+  return NextResponse.json(posts);
 }
 
 // POST - dodaj novu objavu (samo admin)
@@ -19,7 +34,6 @@ export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: 'Nije autorizirano' }, { status: 401 });
 
-  const supabase = getSupabase();
   const formData = await req.formData();
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
@@ -29,28 +43,24 @@ export async function POST(req: NextRequest) {
 
   if (imageFile && imageFile.size > 0) {
     const fileExt = imageFile.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const arrayBuffer = await imageFile.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
-
-    const { error: uploadError } = await supabase.storage
-      .from('post-images')
-      .upload(fileName, buffer, { contentType: imageFile.type });
-
-    if (!uploadError) {
-      const { data: urlData } = supabase.storage
-        .from('post-images')
-        .getPublicUrl(fileName);
-      image_url = urlData.publicUrl;
-    }
+    const fileName = `posts/images/${Date.now()}.${fileExt}`;
+    const blob = await put(fileName, imageFile, {
+      access: 'public',
+      allowOverwrite: true,
+    });
+    image_url = blob.url;
   }
 
-  const { data, error } = await supabase
-    .from('posts')
-    .insert([{ title, content, image_url }])
-    .select()
-    .single();
+  const posts = await readPosts();
+  const newPost = {
+    id: crypto.randomUUID(),
+    title,
+    content,
+    image_url,
+    created_at: new Date().toISOString(),
+  };
+  posts.unshift(newPost);
+  await writePosts(posts);
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data);
+  return NextResponse.json(newPost);
 }

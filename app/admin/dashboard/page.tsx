@@ -20,6 +20,7 @@ export default function AdminDashboard() {
   const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [preview, setPreview] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -48,6 +49,7 @@ export default function AdminDashboard() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setSubmitError('');
 
     const formData = new FormData();
     formData.append('title', title);
@@ -64,6 +66,9 @@ export default function AdminDashboard() {
       setShowForm(false);
       if (fileRef.current) fileRef.current.value = '';
       fetchPosts();
+    } else {
+      const data = await res.json().catch(() => ({}));
+      setSubmitError(data.error || 'Greška pri objavljivanju. Pokušajte ponovo.');
     }
 
     setSubmitting(false);
@@ -143,6 +148,10 @@ export default function AdminDashboard() {
                 <img src={preview} alt="Pregled" className="mt-3 rounded-xl max-h-48 object-cover w-full" />
               )}
             </div>
+
+          {submitError && (
+              <p className="text-red-600 text-sm bg-red-50 px-4 py-2 rounded-lg">{submitError}</p>
+            )}
 
             <div className="flex gap-3 pt-2">
               <button
