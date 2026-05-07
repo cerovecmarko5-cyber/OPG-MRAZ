@@ -14,7 +14,7 @@ export default function Home() {
             backgroundPosition: 'center center',
           }}
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.0) 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.0) 100%)' }} />
         <div className="relative px-4 sm:px-12 lg:px-16 py-20 sm:py-28 min-h-[70vh] flex items-end">
           <div className="w-full max-w-lg pb-6">
               <div className="space-y-5">
