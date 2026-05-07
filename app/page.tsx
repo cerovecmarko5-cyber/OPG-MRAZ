@@ -15,7 +15,7 @@ export default function Home() {
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center center',
-              backgroundColor: '#000',
+              backgroundColor: '#fff',
             }}
           />
           <div className="bg-red-700 px-6 py-8 text-white">
