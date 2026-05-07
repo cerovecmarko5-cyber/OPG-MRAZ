@@ -42,12 +42,17 @@ export default function CartPage() {
             </div>
             <div className="flex items-center gap-4">
               <input
+                key={item.quantity}
                 type="number"
                 min="1"
-                value={item.quantity}
-                onChange={(e) => {
+                defaultValue={item.quantity}
+                onBlur={(e) => {
                   const val = parseInt(e.target.value);
-                  if (!isNaN(val)) updateQuantity(item.product.id, val);
+                  if (!isNaN(val) && val >= 1) updateQuantity(item.product.id, val);
+                  else e.target.value = String(item.quantity);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
                 }}
                 className="w-16 px-2 py-1 border border-gray-300 rounded"
               />
