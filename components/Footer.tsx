@@ -7,7 +7,7 @@ export default function Footer() {
         <div>
           <h2 className="text-xl font-semibold text-white mb-3">OPG I DESTILERIJA MRAZ</h2>
           <p className="text-slate-300 leading-7">
-            Tradicija uzgoja i svježi proizvodi iz prve ruke. Nudimo voće, povrće i med iz našeg
+            Tradicija uzgoja i svježi proizvodi iz prve ruke. Nudimo voće, rakiju i likere iz našeg
             gospodarstva s pažnjom za kvalitetu i prirodu.
           </p>
         </div>
