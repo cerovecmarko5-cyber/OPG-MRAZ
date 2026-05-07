@@ -9,7 +9,7 @@ export default function Home() {
         {/* Mobile: slika gore, tekst ispod */}
         <div className="md:hidden">
           <div
-            className="w-full h-[52vw] min-h-[200px] max-h-[320px]"
+            className="w-full h-[70vw] min-h-[280px] max-h-[440px]"
             style={{
               backgroundImage: "url('/WhatsApp Image 2026-04-10 at 15.52.58.jpeg')",
               backgroundSize: 'cover',
@@ -18,8 +18,8 @@ export default function Home() {
           />
           <div className="bg-red-700 px-6 py-8 text-white">
             <div className="space-y-4">
-              <h1 className="text-2xl font-black tracking-tight">Rakija, Likeri i Voće s dušom naše obitelji</h1>
-              <p className="text-sm leading-6 text-white/80">
+              <h1 className="text-3xl font-black tracking-tight">Rakija, Likeri i Voće s dušom naše obitelji</h1>
+              <p className="text-base leading-7 text-white/80">
                 Dobrodošli u OPG i DESTILERIJU MRAZ, gdje tradicija susreće prirodnu kvalitetu. S našim proizvodima
                 donosimo autentičan okus domaće zagorske prirode izravno na vaš stol.
               </p>
