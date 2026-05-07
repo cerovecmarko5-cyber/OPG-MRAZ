@@ -63,11 +63,11 @@ export default function ProductsPage() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredProducts.map((product) => (
           <div key={product.id} className="flex flex-col rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-xl transition-shadow overflow-hidden">
-            <div className="relative">
+            <div className="relative bg-gray-50 flex items-center justify-center" style={{height: '260px'}}>
               <img
                 src={product.image}
                 alt={product.name}
-                className="h-48 w-full object-cover"
+                className="h-full w-full object-contain p-4 drop-shadow-lg"
               />
               <span className="absolute top-3 left-3 bg-red-700 text-white text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full">
                 {product.category}
