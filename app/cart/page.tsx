@@ -35,17 +35,20 @@ export default function CartPage() {
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Vaša košarica</h1>
       <div className="bg-white rounded-lg shadow-md p-6">
         {state.items.map((item) => (
-          <div key={item.product.id} className="flex items-center justify-between border-b border-gray-200 py-4">
+          <div key={item.product.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-200 py-4 gap-3">
             <div className="flex-1">
               <h3 className="text-lg font-medium text-gray-900">{item.product.name}</h3>
-              <p className="text-gray-600">{item.product.price} €/kg</p>
+              <p className="text-gray-600">{item.product.price.toFixed(2)} €/{item.product.unit || 'kom'}</p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-4">
               <input
                 type="number"
                 min="1"
                 value={item.quantity}
-                onChange={(e) => updateQuantity(item.product.id, parseInt(e.target.value))}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value);
+                  if (!isNaN(val)) updateQuantity(item.product.id, val);
+                }}
                 className="w-16 px-2 py-1 border border-gray-300 rounded"
               />
               <span className="text-lg font-medium">{(item.product.price * item.quantity).toFixed(2)} €</span>

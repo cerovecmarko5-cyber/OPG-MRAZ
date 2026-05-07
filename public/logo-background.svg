@@ -1,0 +1,15 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="transparent" />
+  <g opacity="0.15">
+    <path d="M350 580C350 520 420 470 520 460C620 450 760 470 840 500C920 530 960 590 960 650H350V580Z" fill="#0F766E" />
+    <path d="M440 580H870V680C870 720 830 760 780 760H510C460 760 440 720 440 680V580Z" fill="#0F766E" />
+    <path d="M420 580L610 420L790 580H420Z" fill="#0F766E" />
+    <path d="M500 570V640H750V570" stroke="#164E63" stroke-width="24" stroke-linecap="round" />
+    <path d="M560 640H690" stroke="#164E63" stroke-width="16" stroke-linecap="round" />
+  </g>
+  <text x="120" y="220" fill="#9D174D" font-family="sans-serif" font-size="64" font-weight="700">OPG i DESTILERIJA</text>
+  <text x="120" y="320" fill="#B91C1C" font-family="cursive" font-size="120" font-weight="700">Mraz</text>
+  <path d="M520 520C520 480 560 450 610 450C660 450 700 480 700 520C700 560 660 590 610 590C560 590 520 560 520 520Z" fill="#F8FAFC" opacity="0.4" />
+  <path d="M1000 200C1000 165 1032 135 1068 135C1104 135 1136 165 1136 200C1136 235 1104 265 1068 265C1032 265 1000 235 1000 200Z" fill="#164E63" opacity="0.12" />
+  <path d="M1400 650C1400 620 1425 600 1456 600C1487 600 1512 620 1512 650C1512 680 1487 700 1456 700C1425 700 1400 680 1400 650Z" fill="#164E63" opacity="0.09" />
+</svg>

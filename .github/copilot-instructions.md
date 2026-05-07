@@ -20,7 +20,7 @@
 	<!-- No task required for this project. -->
 
 - [x] Launch the Project
-	<!-- Development server started at http://localhost:3000 -->
+	<!-- Development server started at daj s+ -->
 
 - [x] Ensure Documentation is Complete
 	<!-- README.md updated and copilot-instructions.md cleaned up. -->

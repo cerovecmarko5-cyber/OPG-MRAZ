@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "./context/CartContext";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OPG Mraz - Online Trgovina",
-  description: "Kupujte svježe poljoprivredne proizvode od OPG Mraz",
+  title: "OPG i DESTILERIJA Mraz - Online Trgovina",
+  description: "Kupujte svježe poljoprivredne proizvode od OPG i DESTILERIJA MRAZ",
 };
 
 export default function RootLayout({
@@ -29,10 +30,11 @@ export default function RootLayout({
       lang="hr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-white text-slate-900">
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>
+          <Footer />
         </CartProvider>
       </body>
     </html>

@@ -11,14 +11,41 @@ export default function CheckoutPage() {
     phone: '',
     address: '',
   });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
 
   const total = state.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would normally send the order to a server
-    alert('Narudžba je poslana! Kontaktirat ćemo vas uskoro.');
-    dispatch({ type: 'CLEAR_CART' });
+    setStatus('sending');
+    setMessage('');
+
+    try {
+      const response = await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          items: state.items,
+          total,
+        }),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || 'Greška pri slanju narudžbe');
+      }
+
+      setStatus('success');
+      setMessage('Narudžba je poslana. Provjerite svoj email i kontaktirat ćemo vas uskoro.');
+      dispatch({ type: 'CLEAR_CART' });
+      setFormData({ name: '', email: '', phone: '', address: '' });
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+      setMessage('Došlo je do pogreške pri slanju. Molimo pokušajte ponovno.');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -93,10 +120,18 @@ export default function CheckoutPage() {
             </div>
             <button
               type="submit"
-              className="w-full bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
+              disabled={status === 'sending'}
+              className="w-full bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:cursor-not-allowed disabled:bg-gray-400"
             >
-              Pošalji narudžbu
+              {status === 'sending' ? 'Slanje...' : 'Pošalji narudžbu'}
             </button>
+            {message ? (
+              <p
+                className={`mt-4 text-sm ${status === 'success' ? 'text-green-700' : 'text-red-700'}`}
+              >
+                {message}
+              </p>
+            ) : null}
           </form>
         </div>
         <div>

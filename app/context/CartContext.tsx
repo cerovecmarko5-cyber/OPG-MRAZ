@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useState, ReactNode } from 'react';
 import { Product } from '../../lib/types';
 
 interface CartItem {
@@ -16,7 +16,8 @@ type CartAction =
   | { type: 'ADD_ITEM'; product: Product }
   | { type: 'REMOVE_ITEM'; productId: string }
   | { type: 'UPDATE_QUANTITY'; productId: string; quantity: number }
-  | { type: 'CLEAR_CART' };
+  | { type: 'CLEAR_CART' }
+  | { type: 'LOAD_FROM_STORAGE'; payload: CartState };
 
 const CartContext = createContext<{
   state: CartState;
@@ -63,6 +64,8 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       };
     case 'CLEAR_CART':
       return { items: [] };
+    case 'LOAD_FROM_STORAGE':
+      return action.payload;
     default:
       return state;
   }
@@ -70,6 +73,28 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
+  const [mounted, setMounted] = useState(false);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('cart');
+    if (saved) {
+      try {
+        const cartState = JSON.parse(saved);
+        dispatch({ type: 'LOAD_FROM_STORAGE', payload: cartState });
+      } catch (e) {
+        console.error('Failed to load cart from localStorage:', e);
+      }
+    }
+    setMounted(true);
+  }, []);
+
+  // Save to localStorage whenever state changes
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem('cart', JSON.stringify(state));
+    }
+  }, [state, mounted]);
 
   return (
     <CartContext.Provider value={{ state, dispatch }}>
