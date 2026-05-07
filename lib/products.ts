@@ -157,7 +157,7 @@ export const products: Product[] = [
     name: 'EKO Haskap Svježi 1kg',
     description: 'Svježe haskap bobice iz ekološkog uzgoja, iznimno bogate antioksidansima i vitaminom C.',
     price: 14.00,
-    image: '/products/haskap-07.jpeg',
+    image: '/products/haskap-svjezi.jpg',
     category: 'EKO',
     unit: '1kg',
   },
