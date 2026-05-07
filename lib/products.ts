@@ -161,4 +161,32 @@ export const products: Product[] = [
     category: 'EKO',
     unit: '1kg',
   },
+  // Poklon paketi
+  {
+    id: '18',
+    name: 'Trio Mini Poklon Paket',
+    description: 'Savršen poklon za svaku prigodu! Lijepa poklon kutija s tri male bočice: Haskap liker 0.2L, Višnjevac 0.2L i Zagorska Šljivovica — sve u slamici s crvenom mašnom. Idealno za rođendane, vjenčanja i blagdane.',
+    price: 25.00,
+    image: '/products/poklon-trio.jpg',
+    category: 'Poklon paketi',
+    unit: 'kom',
+  },
+  {
+    id: '19',
+    name: 'Duo Liker Poklon Paket',
+    description: 'Dvije bočice 0.7L domaćih likera po vašem izboru (Višnjevac, Haskap ili Mušmula) u elegantnoj poklon kutiji s mašnom. Odličan dar za ljubitelje kvalitetnih likera.',
+    price: 38.00,
+    image: '/products/poklon-trio.jpg',
+    category: 'Poklon paketi',
+    unit: 'kom',
+  },
+  {
+    id: '20',
+    name: 'Degustacijski Set — 5 Mini Bočica',
+    description: 'Pet mini bočica 0.04L naših najpoznatijih proizvoda: Višnjevac, Haskap liker, Liker Maslina, Liker Mušmula i Zagorska Šljivovica. Pakirano u poklon kutijicu — idealno za degustaciju ili kao mali pažljivi poklon.',
+    price: 18.00,
+    image: '/products/poklon-trio.jpg',
+    category: 'Poklon paketi',
+    unit: 'kom',
+  },
 ];
