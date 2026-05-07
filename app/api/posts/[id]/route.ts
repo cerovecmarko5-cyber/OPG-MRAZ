@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../auth';
-import { put, list, getDownloadUrl } from '@vercel/blob';
+import { put, list } from '@vercel/blob';
 
 const POSTS_BLOB = 'posts/posts.json';
 
@@ -8,8 +8,7 @@ async function readPosts() {
   try {
     const { blobs } = await list({ prefix: 'posts/posts.json' });
     if (!blobs.length) return [];
-    const downloadUrl = await getDownloadUrl(blobs[0].url);
-    const res = await fetch(downloadUrl);
+    const res = await fetch(blobs[0].url, { cache: 'no-store' });
     return await res.json();
   } catch {
     return [];
