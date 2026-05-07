@@ -11,15 +11,15 @@ export default function Home() {
           style={{
             backgroundImage: "url('/WhatsApp Image 2026-04-10 at 15.52.58.jpeg')",
             backgroundSize: 'cover',
-            backgroundPosition: 'left center',
+            backgroundPosition: 'center center',
           }}
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(2,6,23,0.92) 0%, rgba(2,6,23,0.92) 60%, rgba(2,6,23,0.97) 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.0) 100%)' }} />
         <div className="relative px-4 sm:px-12 lg:px-16 py-20 sm:py-28 min-h-[70vh] flex items-end">
           <div className="w-full max-w-lg pb-6">
               <div className="space-y-5">
-                <h1 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">Rakija, Likeri i Voće s dušom naše obitelji</h1>
-                <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
+                <h1 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}>Rakija, Likeri i Voće s dušom naše obitelji</h1>
+                <p className="max-w-2xl text-base leading-7 text-white/90 sm:text-lg sm:leading-8" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
                   Dobrodošli u OPG i DESTILERIJU MRAZ, gdje tradicija susreće prirodnu kvalitetu. S našim proizvodima
                   donosimo autentičan okus domaće zagorske prirode izravno na vaš stol.
                 </p>
