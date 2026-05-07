@@ -9,7 +9,7 @@ export default function Home() {
         {/* Mobile: slika gore, tekst ispod */}
         <div className="md:hidden">
           <div
-            className="w-full h-[100vw] min-h-[350px] max-h-[600px]"
+            className="w-full h-[72vw] min-h-[250px] max-h-[380px]"
             style={{
               backgroundImage: "url('/WhatsApp Image 2026-04-10 at 15.52.58.jpeg')",
               backgroundSize: 'contain',
