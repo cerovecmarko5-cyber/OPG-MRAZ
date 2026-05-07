@@ -18,20 +18,23 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="h-96 w-full object-cover rounded-lg"
-        />
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
-          <p className="text-gray-600 mb-4">{product.description}</p>
-          <p className="text-2xl font-bold text-green-600 mb-6">{product.price.toFixed(2)} €/{product.unit || 'kom'}</p>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div className="bg-gray-50 rounded-3xl flex items-center justify-center p-8" style={{minHeight: '420px'}}>
+          <img
+            src={product.image}
+            alt={product.name}
+            className="max-h-96 w-full object-contain drop-shadow-xl"
+          />
+        </div>
+        <div className="flex flex-col gap-5">
+          <span className="text-xs uppercase tracking-widest text-red-700 font-semibold">{product.category}</span>
+          <h1 className="text-4xl font-bold text-slate-900">{product.name}</h1>
+          <p className="text-slate-500 leading-7">{product.description}</p>
+          <p className="text-3xl font-bold text-red-700">{product.price.toFixed(2)} € <span className="text-base font-normal text-slate-400">/ {product.unit || 'kom'}</span></p>
           <button
             onClick={addToCart}
-            className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
+            className="w-full rounded-full bg-red-700 text-white py-3.5 font-semibold text-base hover:bg-red-800 transition"
           >
             Dodaj u košaricu
           </button>
