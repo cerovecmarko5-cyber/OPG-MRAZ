@@ -28,8 +28,13 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-red-600 mt-10 pt-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-500 text-sm">
-          © {new Date().getFullYear()} OPG i DESTILERIJA Mraz. Sva prava pridržana.
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-3 text-center">
+          <p className="text-amber-300 font-semibold text-sm tracking-wide">
+            🔞 Alkohol je zabranjen osobama mlađim od 18 godina. Odgovorno konzumirajte.
+          </p>
+          <p className="text-slate-500 text-sm">
+            © {new Date().getFullYear()} OPG i DESTILERIJA Mraz. Sva prava pridržana.
+          </p>
         </div>
       </div>
     </footer>
