@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../auth';
-import { supabase } from '../../../lib/supabase';
+import { getSupabase } from '../../../lib/supabase';
 
 // GET - dohvati sve objave (javno)
 export async function GET() {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('posts')
     .select('*')
@@ -18,6 +19,7 @@ export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: 'Nije autorizirano' }, { status: 401 });
 
+  const supabase = getSupabase();
   const formData = await req.formData();
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;

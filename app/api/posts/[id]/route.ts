@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../auth';
-import { supabase } from '../../../../lib/supabase';
+import { getSupabase } from '../../../../lib/supabase';
 
 // DELETE - obriši objavu (samo admin)
 export async function DELETE(
@@ -11,6 +11,7 @@ export async function DELETE(
   if (!session) return NextResponse.json({ error: 'Nije autorizirano' }, { status: 401 });
 
   const { id } = await params;
+  const supabase = getSupabase();
 
   const { error } = await supabase.from('posts').delete().eq('id', id);
 
