@@ -17,7 +17,29 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "OPG i DESTILERIJA Mraz - Online Trgovina",
-  description: "Kupujte svježe poljoprivredne proizvode od OPG i DESTILERIJA MRAZ",
+  description: "Kupujte svježe domaće likere, rakiju i eko proizvode od OPG i DESTILERIJA Mraz. Tradicija i kvaliteta iz Zagorja.",
+  openGraph: {
+    title: "OPG i DESTILERIJA Mraz",
+    description: "Domaći likeri, rakija i eko proizvodi iz naše obiteljske destilerije. Naručite online!",
+    url: "https://opg-mrazmiro.com",
+    siteName: "OPG i DESTILERIJA Mraz",
+    images: [
+      {
+        url: "https://opg-mrazmiro.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "OPG i DESTILERIJA Mraz",
+      },
+    ],
+    locale: "hr_HR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "OPG i DESTILERIJA Mraz",
+    description: "Domaći likeri, rakija i eko proizvodi iz naše obiteljske destilerije.",
+    images: ["https://opg-mrazmiro.com/og-image.png"],
+  },
 };
 
 export default function RootLayout({
