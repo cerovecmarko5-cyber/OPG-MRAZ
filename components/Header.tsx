@@ -7,6 +7,7 @@ import { useCart } from '../app/context/CartContext';
 const navLinks = [
   { href: '/', label: 'Početna' },
   { href: '/products', label: 'Proizvodi' },
+  { href: '/obavijesti', label: 'Obavijesti' },
   { href: '/#o-nama', label: 'O nama' },
   { href: '/#kontakt', label: 'Kontakt' },
 ];
