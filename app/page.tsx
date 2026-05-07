@@ -5,26 +5,63 @@ import ContactForm from '../components/ContactForm';
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <section className="relative overflow-hidden text-white">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: "url('/WhatsApp Image 2026-04-10 at 15.52.58.jpeg')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center center',
-          }}
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.0) 100%)' }} />
-        <div className="relative px-4 sm:px-12 lg:px-16 py-20 sm:py-28 min-h-[70vh] flex items-end">
-          <div className="w-full max-w-lg pb-6">
+      <section className="overflow-hidden">
+        {/* Mobile: slika gore, tekst ispod */}
+        <div className="md:hidden">
+          <div
+            className="w-full h-[52vw] min-h-[200px] max-h-[320px]"
+            style={{
+              backgroundImage: "url('/WhatsApp Image 2026-04-10 at 15.52.58.jpeg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center top',
+            }}
+          />
+          <div className="bg-slate-900 px-6 py-8 text-white">
+            <div className="space-y-4">
+              <h1 className="text-2xl font-black tracking-tight">Rakija, Likeri i Voće s dušom naše obitelji</h1>
+              <p className="text-sm leading-6 text-white/80">
+                Dobrodošli u OPG i DESTILERIJU MRAZ, gdje tradicija susreće prirodnu kvalitetu. S našim proizvodima
+                donosimo autentičan okus domaće zagorske prirode izravno na vaš stol.
+              </p>
+            </div>
+            <div className="mt-6 flex flex-col gap-3">
+              <Link
+                href="/products"
+                className="inline-flex items-center justify-center rounded-full bg-amber-500 px-8 py-3 text-base font-semibold text-slate-950 shadow-lg shadow-amber-500/30 hover:bg-amber-400 transition"
+              >
+                Pogledajte proizvode
+              </Link>
+              <Link
+                href="/cart"
+                className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-8 py-3 text-base font-semibold text-white hover:bg-white/20 transition"
+              >
+                Naručite sada
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop: originalni overlay layout */}
+        <div className="hidden md:block relative text-white">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "url('/WhatsApp Image 2026-04-10 at 15.52.58.jpeg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+            }}
+          />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.0) 100%)' }} />
+          <div className="relative px-12 lg:px-16 py-28 min-h-[70vh] flex items-end">
+            <div className="w-full max-w-lg pb-6">
               <div className="space-y-5">
-                <h1 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}>Rakija, Likeri i Voće s dušom naše obitelji</h1>
-                <p className="max-w-2xl text-base leading-7 text-white/90 sm:text-lg sm:leading-8" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
+                <h1 className="text-4xl font-black tracking-tight lg:text-5xl" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}>Rakija, Likeri i Voće s dušom naše obitelji</h1>
+                <p className="max-w-2xl text-base leading-7 text-white/90 lg:text-lg lg:leading-8" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
                   Dobrodošli u OPG i DESTILERIJU MRAZ, gdje tradicija susreće prirodnu kvalitetu. S našim proizvodima
                   donosimo autentičan okus domaće zagorske prirode izravno na vaš stol.
                 </p>
               </div>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+              <div className="mt-8 flex gap-4">
                 <Link
                   href="/products"
                   className="inline-flex items-center justify-center rounded-full bg-amber-500 px-8 py-3 text-base font-semibold text-slate-950 shadow-lg shadow-amber-500/30 hover:bg-amber-400 transition"
@@ -38,6 +75,7 @@ export default function Home() {
                   Naručite sada
                 </Link>
               </div>
+            </div>
           </div>
         </div>
       </section>
