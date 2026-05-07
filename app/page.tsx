@@ -7,10 +7,14 @@ export default function Home() {
     <div className="flex flex-col">
       <section className="relative overflow-hidden text-white">
         <div
-          className="absolute inset-0 bg-cover bg-[30%_center] sm:bg-center"
-          style={{ backgroundImage: "url('/WhatsApp Image 2026-04-10 at 15.52.58.jpeg')" }}
+          className="absolute inset-0"
+          style={{
+            backgroundImage: "url('/WhatsApp Image 2026-04-10 at 15.52.58.jpeg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'left center',
+          }}
         />
-        <div className="absolute inset-0 bg-slate-950/80" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(2,6,23,0.92) 0%, rgba(2,6,23,0.92) 60%, rgba(2,6,23,0.97) 100%)' }} />
         <div className="relative px-4 sm:px-12 lg:px-16 py-20 sm:py-28 min-h-[70vh] flex items-end">
           <div className="w-full max-w-lg pb-6">
               <div className="space-y-5">
