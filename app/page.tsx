@@ -16,7 +16,7 @@ export default function Home() {
               backgroundPosition: 'center top',
             }}
           />
-          <div className="bg-slate-900 px-6 py-8 text-white">
+          <div className="bg-red-700 px-6 py-8 text-white">
             <div className="space-y-4">
               <h1 className="text-2xl font-black tracking-tight">Rakija, Likeri i Voće s dušom naše obitelji</h1>
               <p className="text-sm leading-6 text-white/80">
