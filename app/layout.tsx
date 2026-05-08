@@ -17,29 +17,37 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OPG i DESTILERIJA Mraz - Online Trgovina",
-  description: "Kupujte svježe domaće likere, rakiju i eko proizvode od OPG i DESTILERIJA Mraz. Tradicija i kvaliteta iz Zagorja.",
+  title: "OPG Mraz - Domaći Likeri i Rakija | Destilerija Mraz",
+  description: "OPG Mraz — domaći likeri, rakija i eko proizvodi iz obiteljske destilerije u Zagorju. Naručite online svježe domaće proizvode s tradicijom i kvalitetom.",
+  keywords: [
+    "OPG Mraz", "OPG Miro Mraz", "Destilerija Mraz", "domaći likeri", "domaća rakija",
+    "eko proizvodi Zagorje", "kupiti liker online", "hrvatska destilerija", "voćna rakija",
+    "liker od oraha", "liker od višnje", "domaće žestice", "OPG Hrvatska"
+  ],
+  metadataBase: new URL("https://opgmiromraz.vercel.app"),
+  alternates: {
+    canonical: "https://opgmiromraz.vercel.app",
+  },
   openGraph: {
-    title: "OPG i DESTILERIJA Mraz",
-    description: "Domaći likeri, rakija i eko proizvodi iz naše obiteljske destilerije. Naručite online!",
-    url: "https://opg-mrazmiro.com",
-    siteName: "OPG i DESTILERIJA Mraz",
-    images: [
-      {
-        url: "https://opg-mrazmiro.com/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "OPG i DESTILERIJA Mraz",
-      },
-    ],
+    title: "OPG Mraz - Domaći Likeri i Rakija",
+    description: "Domaći likeri, rakija i eko proizvodi iz naše obiteljske destilerije u Zagorju. Naručite online!",
+    url: "https://opgmiromraz.vercel.app",
+    siteName: "OPG Mraz",
     locale: "hr_HR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "OPG i DESTILERIJA Mraz",
-    description: "Domaći likeri, rakija i eko proizvodi iz naše obiteljske destilerije.",
-    images: ["https://opg-mrazmiro.com/og-image.png"],
+    title: "OPG Mraz - Domaći Likeri i Rakija",
+    description: "Domaći likeri, rakija i eko proizvodi iz naše obiteljske destilerije u Zagorju.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 };
 
