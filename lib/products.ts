@@ -144,6 +144,17 @@ export const products: Product[] = [
     unit: 'kom',
     comingSoon: true,
   },
+  // EKO Haskap Svježi
+  {
+    id: '17',
+    name: 'EKO Haskap Svježi 1kg',
+    description: 'Svježe haskap bobice iz ekološkog uzgoja, iznimno bogate antioksidansima i vitaminom C.',
+    price: 14.00,
+    image: '/products/haskap-svjezi.jpg',
+    category: 'EKO',
+    unit: '1kg',
+    comingSoon: true,
+  },
   // EKO Ocat od Mandarine
   {
     id: '16',
