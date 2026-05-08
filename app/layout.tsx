@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "./context/CartContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import AgeVerification from "../components/AgeVerification";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,6 +55,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-white text-slate-900">
         <CartProvider>
+          <AgeVerification />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
