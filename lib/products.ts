@@ -122,6 +122,7 @@ export const products: Product[] = [
     image: '/products/maslina-05.jpeg',
     category: 'Likeri',
     unit: 'kom',
+    comingSoon: true,
   },
   {
     id: '14',
@@ -131,6 +132,7 @@ export const products: Product[] = [
     image: '/products/maslina-004.jpeg',
     category: 'Likeri',
     unit: 'kom',
+    comingSoon: true,
   },
   {
     id: '15',
@@ -140,6 +142,38 @@ export const products: Product[] = [
     image: '/products/maslina-02.jpeg',
     category: 'Likeri',
     unit: 'kom',
+    comingSoon: true,
+  },
+  // Liker Borovnice
+  {
+    id: '21',
+    name: 'Liker od Borovnice 0.7L',
+    description: 'Domaći liker od svježih borovnica, bogat prirodnim aromama i antioksidansima.',
+    price: 20.00,
+    image: '/products/haskap-07.jpeg',
+    category: 'Likeri',
+    unit: 'kom',
+    comingSoon: true,
+  },
+  {
+    id: '22',
+    name: 'Liker od Borovnice 0.2L',
+    description: 'Domaći liker od svježih borovnica u manjoj bočici.',
+    price: 8.00,
+    image: '/products/haskap-02.jpeg',
+    category: 'Likeri',
+    unit: 'kom',
+    comingSoon: true,
+  },
+  {
+    id: '23',
+    name: 'Liker od Borovnice 0.04L',
+    description: 'Domaći liker od borovnica u mini bočici — idealno za degustaciju.',
+    price: 2.50,
+    image: '/products/haskap-004.jpeg',
+    category: 'Likeri',
+    unit: 'kom',
+    comingSoon: true,
   },
   // EKO Ocat od Mandarine
   {
