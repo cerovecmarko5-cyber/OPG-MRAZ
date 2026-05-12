@@ -27,10 +27,10 @@ export default function AgeVerification() {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
         {/* Header */}
-        <div className="bg-amber-700 px-8 py-6 text-center">
+        <div className="bg-red-700 px-8 py-6 text-center">
           <div className="text-4xl mb-2">🍷</div>
-          <h1 className="text-2xl font-bold text-white">OPG i DESTILERIJA Mraz</h1>
-          <p className="text-amber-200 text-sm mt-1">Provjera dobi</p>
+          <h1 className="text-2xl font-bold text-white">OPG i DESTILERIJA MRAZ</h1>
+          <p className="text-red-200 text-sm mt-1">Provjera dobi</p>
         </div>
 
         {/* Body */}
@@ -46,7 +46,7 @@ export default function AgeVerification() {
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleConfirm}
-              className="flex-1 bg-amber-700 hover:bg-amber-800 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200"
+              className="flex-1 bg-red-700 hover:bg-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200"
             >
               Da, stariji sam od 18
             </button>

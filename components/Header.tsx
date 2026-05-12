@@ -12,7 +12,7 @@ const navLinks = [
   { href: '/#kontakt', label: 'Kontakt' },
 ];
 
-export default function Header() {
+export default function Header({ isAdmin = false }: { isAdmin?: boolean }) {
   const { state } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
   const itemCount = state.items.reduce((sum, item) => sum + item.quantity, 0);
@@ -32,6 +32,11 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            {isAdmin && (
+              <Link href="/admin/dashboard" className="bg-white/20 hover:bg-white/30 transition px-3 py-1.5 rounded-full text-sm font-semibold">
+                ⚙️ Admin
+              </Link>
+            )}
             <Link href="/cart" className="relative inline-block hover:text-red-200 transition">
               Košarica
               {itemCount > 0 && (
@@ -83,6 +88,15 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            {isAdmin && (
+              <Link
+                href="/admin/dashboard"
+                className="py-3 font-semibold text-white/90 hover:text-white transition"
+                onClick={() => setMobileOpen(false)}
+              >
+                ⚙️ Admin panel
+              </Link>
+            )}
           </nav>
         </div>
       )}

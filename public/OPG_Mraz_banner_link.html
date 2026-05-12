@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <title>OPG Mraz - Banner</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .wrapper {
+      position: relative;
+      display: inline-block;
+      line-height: 0;
+    }
+    .wrapper img {
+      display: block;
+      max-width: 1081px;
+      width: 100%;
+    }
+    /* Kliklabilno područje na URL gumbu */
+    .link-url {
+      position: absolute;
+      left: 25.7%;
+      top: 84.7%;
+      width: 33%;
+      height: 5%;
+      cursor: pointer;
+      border-radius: 50px;
+    }
+    .link-url:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    /* Kliklabilno područje na QR kodu */
+    .link-qr {
+      position: absolute;
+      left: 60%;
+      top: 78.5%;
+      width: 15.5%;
+      height: 13.5%;
+      cursor: pointer;
+      border-radius: 14px;
+    }
+    .link-qr:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <img src="OPG_Mraz_banner.jpg" alt="OPG i Destilerija Mraz" />
+    <a class="link-url" href="https://opgmiromraz.vercel.app" target="_blank" title="Posjetite OPG Mraz web shop"></a>
+    <a class="link-qr"  href="https://opgmiromraz.vercel.app" target="_blank" title="Posjetite OPG Mraz web shop"></a>
+  </div>
+</body>
+</html>

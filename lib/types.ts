@@ -7,4 +7,5 @@ export interface Product {
   category: string;
   unit?: string;
   comingSoon?: boolean;
+  inStock?: boolean;
 }

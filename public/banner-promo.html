@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <title>OPG Mraz - Promo Banner</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #e8e0d5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+    }
+    .banner {
+      width: 1080px;
+      height: 1080px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    /* GORNJI DIO - bijeli, logo vidljiv */
+    .top {
+      background: #ffffff;
+      flex: 0 0 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 60px;
+      position: relative;
+    }
+    .top img.logo {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      object-fit: contain;
+    }
+    /* Zlatna traka */
+    .gold-bar {
+      height: 8px;
+      background: linear-gradient(90deg, #8b4513, #c8860a, #f0c040, #c8860a, #8b4513);
+      flex-shrink: 0;
+    }
+    /* DONJI DIO - tamni, tekst */
+    .bottom {
+      background: linear-gradient(160deg, #8b0000 0%, #c0001a 60%, #e0002a 100%);
+      flex: 1 1 1080px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 32px 60px;
+    }
+    .tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      line-height: 1.2;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+    .tagline span { color: #f0c040; }
+    .divider {
+      width: 140px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #f0c040, transparent);
+    }
+    .badges {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.9);
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .bottom-row {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-top: 4px;
+    }
+    .url-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .url-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: #f0c040;
+      font-weight: 600;
+    }
+    .url-link {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      padding: 10px 24px;
+      border-radius: 50px;
+      border: 1px solid rgba(240,192,64,0.5);
+      text-decoration: none;
+    }
+    .url-link:hover { background: rgba(255,255,255,0.18); }
+    .qr-wrap {
+      background: white;
+      padding: 10px;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .qr-wrap img { display: block; width: 110px; height: 110px; }
+    .qr-label {
+      text-align: center;
+      font-size: 9px;
+      color: #777;
+      margin-top: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .hint {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      z-index: 100;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="top">
+      <img class="logo" src="./logo.jpg" alt="OPG i Destilerija Mraz" />
+    </div>
+    <div class="gold-bar"></div>
+    <div class="bottom">
+      <div class="tagline">Domaci likeri i rakija<br/><span>iz srca Zagorja</span></div>
+      <div class="divider"></div>
+      <div class="badges">
+        <span class="badge">?? Vi�njevac</span>
+        <span class="badge">?? Haskap</span>
+        <span class="badge">?? Maslina</span>
+        <span class="badge">?? Mu�mula</span>
+      </div>
+      <div class="bottom-row">
+        <div class="url-box">
+          <span class="url-label">Narucite online</span>
+          <a href="https://opg-mrazmiro.com" target="_blank" class="url-link">opg-mrazmiro.com</a>
+        </div>
+        <div class="qr-wrap">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://opg-mrazmiro.com&color=3d1a00&bgcolor=ffffff" alt="QR kod" />
+          <div class="qr-label">Skeniraj za kupnju</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

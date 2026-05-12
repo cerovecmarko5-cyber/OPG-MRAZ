@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vizitka – OPG i Destilerija Mraz</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      gap: 40px;
+      padding: 40px;
+    }
+
+    h1.page-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    .cards-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .label {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+
+    /* ============================
+       VIZITKA – PREDNJA STRANA
+       85mm × 54mm
+    ============================ */
+    .card {
+      width: 85mm;
+      height: 54mm;
+      border-radius: 4mm;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      position: relative;
+    }
+
+    /* --- PREDNJA STRANA --- */
+    .card-front {
+      background: linear-gradient(160deg, #b91c1c 0%, #991b1b 60%, #7f1d1d 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 6mm 7mm 5mm 7mm;
+      color: white;
+      height: 100%;
+      position: relative;
+    }
+
+    .card-front .qr-corner {
+      position: absolute;
+      bottom: 4mm;
+      right: 4mm;
+      width: 14mm;
+      height: 14mm;
+      background: white;
+      border-radius: 1.5mm;
+      padding: 0.8mm;
+      z-index: 2;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.3);
+    }
+
+    .card-front .qr-corner img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .card-front .brand {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-front .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 14pt;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: 0.03em;
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    .card-front .brand-tagline {
+      font-size: 6.5pt;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-top: 1.5mm;
+      font-weight: 600;
+    }
+
+    .card-front .gold-line {
+      width: 14mm;
+      height: 0.6mm;
+      background: #f59e0b;
+      margin-top: 2.5mm;
+      border-radius: 1mm;
+    }
+
+    .card-front .contact-block {
+      position: relative;
+      z-index: 1;
+      padding-right: 16mm;
+    }
+
+    .card-front .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 2mm;
+      font-size: 6.2pt;
+      color: rgba(255,255,255,0.92);
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
+    .card-front .contact-item svg {
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+
+    /* --- STRAŽNJA STRANA --- */
+    .card-back {
+      background-image: url('kažun.png');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      padding: 0mm 7mm 4mm 7mm;
+      position: relative;
+    }
+
+    .card-back .corner-monogram {
+      position: absolute;
+      top: 2mm;
+      left: 2mm;
+      width: 10mm;
+      height: 10mm;
+      background: #b91c1c;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 14pt;
+      font-weight: 900;
+      color: #fff;
+      z-index: 2;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.35);
+    }
+
+    .card-back .top-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      position: relative;
+      z-index: 1;
+      margin-top: 0;
+      width: 100%;
+    }
+
+    .card-back .name-badge {
+      background: transparent;
+      padding: 2mm 4mm;
+      text-align: center;
+    }
+
+    .card-back .bottom-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2mm;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    /* lagani overlay – slika dominira, tekst čitljiv */
+    .card-back::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 4mm;
+      background: rgba(245, 235, 215, 0.22);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card-back .back-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 9pt;
+      font-weight: 900;
+      color: #b91c1c;
+      text-align: center;
+      line-height: 1.3;
+      text-shadow:
+        0 0 8px rgba(255,255,255,1),
+        0 0 16px rgba(255,255,255,0.9),
+        0 1px 2px rgba(255,255,255,0.95);
+    }
+
+    .card-back .gold-divider {
+      width: 18mm;
+      height: 0.5mm;
+      background: linear-gradient(90deg, #f59e0b, #b45309);
+      border-radius: 1mm;
+    }
+
+    .card-back .back-tagline {
+      font-size: 6pt;
+      color: #991b1b;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-align: center;
+      font-weight: 700;
+      text-shadow:
+        0 0 7px rgba(255,255,255,1),
+        0 0 14px rgba(255,255,255,0.85),
+        0 1px 2px rgba(255,255,255,0.9);
+    }
+
+    .card-back .products-list {
+      font-size: 5.8pt;
+      color: #7f1d1d;
+      text-align: center;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      text-shadow:
+        0 0 6px rgba(255,255,255,1),
+        0 0 12px rgba(255,255,255,0.8),
+        0 1px 2px rgba(255,255,255,0.9);
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 10mm;
+        gap: 15mm;
+      }
+      h1.page-title, .label { display: none; }
+      .cards-wrapper { gap: 15mm; }
+      .card { box-shadow: none; border: 0.3mm solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">Vizitka – OPG i Destilerija Mraz &nbsp;|&nbsp; Ispiši na papiru 85×54 mm</h1>
+
+  <div class="cards-wrapper">
+
+    <!-- PREDNJA STRANA -->
+    <div>
+      <p class="label">Prednja strana</p>
+      <div class="card">
+        <div class="card-front">
+          <div class="brand">
+            <div class="brand-name">OPG I DESTILERIJA<br>MRAZ</div>
+            <div class="gold-line"></div>
+            <div class="brand-tagline">Zagorska tradicija · Prirodna kvaliteta</div>
+          </div>
+          <div class="contact-block">
+            <div class="contact-item">
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 010 2.94 2 2 0 011.94.76h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.67a16 16 0 006.29 6.29l1.27-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2z"/>
+              </svg>
+              +385 98 188 6119
+            </div>
+            <div class="contact-item">
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+              </svg>
+              opgmiromraz1904@gmail.com
+            </div>
+            <div class="contact-item">
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+              Kozjak Zаčretski 3F, Sveti Križ Začretje
+            </div>
+          </div>
+          <div class="qr-corner">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&color=7f1d1d&data=https://opgmiromraz.vercel.app" alt="QR" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STRAŽNJA STRANA -->
+    <div>
+      <p class="label">Stražnja strana</p>
+      <div class="card">
+        <div class="card-back">
+          <div class="corner-monogram">M</div>
+          <div class="top-block">
+            <div class="name-badge">
+              <div class="back-name">OPG I DESTILERIJA<br>MRAZ</div>
+            </div>
+          </div>
+          <div class="bottom-block">
+            <div class="gold-divider"></div>
+            <div class="back-tagline">Rakija · Likeri · Voće</div>
+            <div class="products-list">Višnjevac · Haskap · Maslina · Mušmula · Šljivovica</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

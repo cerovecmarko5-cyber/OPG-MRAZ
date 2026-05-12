@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letak – OPG i Destilerija Mraz</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #e8e8e8;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 20px;
+    }
+
+    h1.page-title {
+      font-size: 13px;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ============================
+       LETAK – A5 (148mm × 210mm)
+    ============================ */
+    .flyer {
+      width: 148mm;
+      min-height: 210mm;
+      background: #fff;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ---- HEADER ---- */
+    .flyer-header {
+      background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 50%, #991b1b 100%);
+      padding: 10mm 9mm 8mm 9mm;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .flyer-header::before {
+      content: '';
+      position: absolute;
+      top: -20mm;
+      right: -15mm;
+      width: 55mm;
+      height: 55mm;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+
+    .flyer-header::after {
+      content: '';
+      position: absolute;
+      bottom: -10mm;
+      left: 30%;
+      width: 40mm;
+      height: 40mm;
+      background: rgba(245,158,11,0.1);
+      border-radius: 50%;
+    }
+
+    .flyer-header .logo-area {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 4mm;
+    }
+
+    .flyer-header .monogram-badge {
+      width: 16mm;
+      height: 16mm;
+      background: rgba(255,255,255,0.12);
+      border: 0.5mm solid rgba(245,158,11,0.7);
+      border-radius: 3mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 22pt;
+      font-weight: 900;
+      color: #f59e0b;
+      flex-shrink: 0;
+      margin-top: 1mm;
+    }
+
+    .flyer-header .title-block {
+      flex: 1;
+    }
+
+    .flyer-header .main-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17pt;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+    }
+
+    .flyer-header .subtitle {
+      font-size: 7pt;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      margin-top: 1.5mm;
+      font-weight: 600;
+    }
+
+    .flyer-header .gold-accent {
+      width: 20mm;
+      height: 0.7mm;
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+      border-radius: 1mm;
+      margin-top: 3mm;
+    }
+
+    .flyer-header .hero-text {
+      position: relative;
+      z-index: 1;
+      margin-top: 5mm;
+      font-size: 9.5pt;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.65;
+      max-width: 125mm;
+    }
+
+    /* ---- SEKCIJA: FEATURED HIGHLIGHT ---- */
+    .amber-band {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+      padding: 2.5mm 9mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5mm;
+    }
+
+    .amber-band span {
+      font-size: 7pt;
+      font-weight: 700;
+      color: #1e293b;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .amber-band .dot {
+      width: 1.5mm;
+      height: 1.5mm;
+      background: #7f1d1d;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ---- BODY ---- */
+    .flyer-body {
+      padding: 7mm 9mm;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6mm;
+    }
+
+    /* ---- PROIZVODI GRID ---- */
+    .section-label {
+      font-size: 6.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: #b91c1c;
+      font-weight: 700;
+      margin-bottom: 2mm;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+    }
+
+    .product-card {
+      border: 0.4mm solid #e2e8f0;
+      border-radius: 2.5mm;
+      padding: 3.5mm 4mm;
+      background: #fafafa;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0.8mm;
+      height: 100%;
+      background: #b91c1c;
+    }
+
+    .product-card.gold::before {
+      background: #f59e0b;
+    }
+
+    .product-card .p-name {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.3;
+    }
+
+    .product-card .p-desc {
+      font-size: 6pt;
+      color: #64748b;
+      margin-top: 1mm;
+      line-height: 1.5;
+    }
+
+    .product-card .p-price {
+      margin-top: 2mm;
+      font-size: 8pt;
+      font-weight: 700;
+      color: #b91c1c;
+    }
+
+    .product-card .p-sizes {
+      font-size: 5.5pt;
+      color: #94a3b8;
+      margin-top: 0.5mm;
+      font-weight: 500;
+    }
+
+    /* ---- POKLON SECTION ---- */
+    .gift-section {
+      background: linear-gradient(135deg, #fef3c7, #fffbeb);
+      border: 0.4mm solid #fcd34d;
+      border-radius: 3mm;
+      padding: 4mm 5mm;
+      display: flex;
+      align-items: flex-start;
+      gap: 3.5mm;
+    }
+
+    .gift-icon {
+      font-size: 14pt;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .gift-section .gift-text h3 {
+      font-size: 8pt;
+      font-weight: 700;
+      color: #92400e;
+    }
+
+    .gift-section .gift-text p {
+      font-size: 6.2pt;
+      color: #78350f;
+      margin-top: 0.8mm;
+      line-height: 1.55;
+    }
+
+    .gift-section .gift-price {
+      font-size: 7pt;
+      font-weight: 700;
+      color: #b45309;
+      margin-top: 1.5mm;
+    }
+
+    /* ---- CONTACT FOOTER ---- */
+    .flyer-footer {
+      background: #1e293b;
+      padding: 6mm 9mm;
+      color: white;
+    }
+
+    .flyer-footer .contact-title {
+      font-size: 7pt;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #f59e0b;
+      font-weight: 700;
+      margin-bottom: 3mm;
+    }
+
+    .flyer-footer .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 2.5mm;
+      font-size: 6.8pt;
+      color: #cbd5e1;
+      line-height: 1.8;
+      font-weight: 500;
+    }
+
+    .flyer-footer .contact-row svg {
+      flex-shrink: 0;
+      opacity: 0.75;
+    }
+
+    .flyer-footer .divider {
+      height: 0.3mm;
+      background: rgba(255,255,255,0.1);
+      margin: 3.5mm 0;
+    }
+
+    .flyer-footer .legal {
+      font-size: 5.5pt;
+      color: #475569;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .flyer-footer .legal strong {
+      color: #64748b;
+    }
+
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3mm;
+      background: #b91c1c;
+      border-radius: 2mm;
+      padding: 3mm 4.5mm;
+      margin-top: 3mm;
+    }
+
+    .cta-row .cta-text {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .cta-row .cta-sub {
+      font-size: 6pt;
+      color: rgba(255,255,255,0.75);
+      margin-top: 0.5mm;
+    }
+
+    .cta-row .cta-badge {
+      background: #f59e0b;
+      color: #1e293b;
+      font-size: 6pt;
+      font-weight: 700;
+      padding: 1.5mm 3mm;
+      border-radius: 1.5mm;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      h1.page-title { display: none; }
+      .flyer {
+        box-shadow: none;
+        width: 148mm;
+        min-height: 210mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">Letak – OPG i Destilerija Mraz &nbsp;|&nbsp; Format A5 (148×210 mm) &nbsp;|&nbsp; Ispiši u boji</h1>
+
+  <div class="flyer">
+
+    <!-- HEADER -->
+    <div class="flyer-header">
+      <div class="logo-area">
+        <div class="monogram-badge">M</div>
+        <div class="title-block">
+          <div class="main-title">OPG I DESTILERIJA<br>MRAZ</div>
+          <div class="subtitle">Zagorska tradicija · Od 1904.</div>
+          <div class="gold-accent"></div>
+        </div>
+      </div>
+      <p class="hero-text">
+        Dobrodošli u svijet autentičnih zagorskih okusa! Svaki naš proizvod nastaje s pažnjom,
+        ljubavlju i poštovanjem prema prirodi — rakije, likeri i EKO voće izravno s našeg gospodarstva.
+      </p>
+    </div>
+
+    <!-- AMBER BAND -->
+    <div class="amber-band">
+      <span>Rakija</span>
+      <div class="dot"></div>
+      <span>Likeri</span>
+      <div class="dot"></div>
+      <span>EKO Voće</span>
+      <div class="dot"></div>
+      <span>Poklon Paketi</span>
+    </div>
+
+    <!-- BODY -->
+    <div class="flyer-body">
+
+      <!-- RAKIJA -->
+      <div>
+        <div class="section-label">Rakija</div>
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="p-name">Zagorska Šljivovica</div>
+            <div class="p-desc">Tradicionalna destilat prema starim zagorskim recepturama naše obitelji.</div>
+            <div class="p-price">od 20,00 €</div>
+            <div class="p-sizes">0.7L · 0.5L · mini 0.04L</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Specijalna Rakija</div>
+            <div class="p-desc">Domaće destilate iz vlastite destilerije — čisti, prirodni okusi bez aditiva.</div>
+            <div class="p-price">Upitaj za ponudu</div>
+            <div class="p-sizes">Po dogovoru</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIKERI -->
+      <div>
+        <div class="section-label">Likeri</div>
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="p-name">Višnjevac</div>
+            <div class="p-desc">Bogat liker od višanja, pun prirodnih aroma — pravi obiteljski recept.</div>
+            <div class="p-price">od 2,50 €</div>
+            <div class="p-sizes">0.7L · 0.2L · mini 0.04L</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Haskap Liker</div>
+            <div class="p-desc">Iznimno bogat antioksidansima, prirodnog voćnog okusa — raritet!</div>
+            <div class="p-price">od 2,50 €</div>
+            <div class="p-sizes">0.7L · 0.2L · mini 0.04L</div>
+          </div>
+          <div class="product-card gold">
+            <div class="p-name">Liker Maslina</div>
+            <div class="p-desc">Jedinstven mediteranski okus — delikatan liker od maslina.</div>
+            <div class="p-price">od 2,50 €</div>
+            <div class="p-sizes">0.5L · 0.2L · mini 0.04L</div>
+          </div>
+          <div class="product-card gold">
+            <div class="p-name">Liker Mušmula</div>
+            <div class="p-desc">Rijetko voće u izvanrednom likeru — ograničena kolekcija.</div>
+            <div class="p-price">od 2,50 €</div>
+            <div class="p-sizes">0.7L · 0.2L · mini 0.04L</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POKLON PAKETI -->
+      <div class="gift-section">
+        <div class="gift-icon">🎁</div>
+        <div class="gift-text">
+          <h3>Poklon Paketi — Idealan dar za svaku prigodu!</h3>
+          <p>
+            <strong>Trio Mini Paket</strong> (3×0.2L) — 25 € &nbsp;·&nbsp;
+            <strong>Duo Liker Paket</strong> (2×0.7L) — 38 € &nbsp;·&nbsp;
+            <strong>Degustacijski Set</strong> (5×mini) — 18 €
+          </p>
+          <div class="gift-price">Savršeno za rođendane, vjenčanja, krštenja i blagdane!</div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-row">
+        <div>
+          <div class="cta-text">Naručite online ili nazovite!</div>
+          <div class="cta-sub">Dostava na kućnu adresu diljem Hrvatske</div>
+        </div>
+        <div class="cta-badge">Naručite danas</div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER / KONTAKT -->
+    <div class="flyer-footer">
+      <div class="contact-title">Kontaktirajte nas</div>
+      <div class="contact-row">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 010 2.94 2 2 0 011.94.76h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.67a16 16 0 006.29 6.29l1.27-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2z"/>
+        </svg>
+        +385 98 188 6119
+      </div>
+      <div class="contact-row">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+        </svg>
+        opgmiromraz1904@gmail.com
+      </div>
+      <div class="contact-row">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+        Kozjak Začretski 3F, Sveti Križ Začretje
+      </div>
+      <div class="divider"></div>
+      <div class="legal">
+        <strong>🔞 Alkohol je zabranjen osobama mlađim od 18 godina. Pijte odgovorno.</strong><br>
+        © 2026 OPG i Destilerija Mraz · Sva prava pridržana
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

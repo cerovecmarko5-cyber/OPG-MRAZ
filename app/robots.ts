@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin/", "/api/", "/checkout/"],
     },
-    sitemap: "https://opgmiromraz.vercel.app/sitemap.xml",
+    sitemap: "https://opg-mrazmiro.com/sitemap.xml",
   };
 }

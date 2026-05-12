@@ -1,25 +1,46 @@
 ﻿'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { products } from '../../lib/products';
+import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { Product } from '../../lib/types';
+
+function SkeletonCard() {
+  return (
+    <div className="flex flex-col rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden animate-pulse">
+      <div className="bg-slate-200" style={{ height: '260px' }} />
+      <div className="p-5 space-y-3">
+        <div className="h-5 bg-slate-200 rounded-full w-3/4" />
+        <div className="h-4 bg-slate-200 rounded-full w-full" />
+        <div className="h-4 bg-slate-200 rounded-full w-5/6" />
+        <div className="h-10 bg-slate-200 rounded-full mt-2" />
+      </div>
+    </div>
+  );
+}
 
 export default function ProductsPage() {
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('Svi');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [added, setAdded] = useState<Record<string, boolean>>({});
   const { dispatch } = useCart();
-  const categories = ['Svi', ...Array.from(new Set(products.map(p => p.category)))];
 
-  const filteredProducts = products.filter(product => {
+  useEffect(() => {
+    fetch('/api/products').then(r => r.json()).then(data => { setAllProducts(data); setLoading(false); }).catch(() => setLoading(false));
+  }, []);
+
+  const categories = ['Svi', ...Array.from(new Set(allProducts.map(p => p.category)))];
+
+  const filteredProducts = allProducts.filter(product => {
     const matchesCategory = selectedCategory === 'Svi' || product.category === selectedCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           product.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  const handleAdd = (product: typeof products[0]) => {
+  const handleAdd = (product: Product) => {
     dispatch({ type: 'ADD_ITEM', product });
     setAdded(prev => ({ ...prev, [product.id]: true }));
     setTimeout(() => setAdded(prev => ({ ...prev, [product.id]: false })), 1500);
@@ -61,7 +82,9 @@ export default function ProductsPage() {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredProducts.map((product) => (
+        {loading
+          ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
+          : filteredProducts.map((product) => (
           <div key={product.id} className={`flex flex-col rounded-3xl border bg-white shadow-sm hover:shadow-xl transition-shadow overflow-hidden ${product.comingSoon ? 'border-amber-200' : 'border-slate-200'}`}>
             <div className="relative bg-gray-50 flex items-center justify-center" style={{height: '260px'}}>
               {product.comingSoon && (
@@ -88,7 +111,12 @@ export default function ProductsPage() {
             <div className="flex flex-col flex-1 p-5 gap-3">
               <h2 className="text-xl font-bold text-slate-900">{product.name}</h2>
               <p className="text-slate-500 text-sm leading-6 flex-1">{product.description}</p>
-              {product.comingSoon ? (
+              {product.inStock === false && !product.comingSoon ? (
+                <div className="flex items-center gap-2 pt-2 bg-slate-50 rounded-2xl px-4 py-3">
+                  <span className="text-slate-400 text-lg">🚫</span>
+                  <p className="text-slate-500 text-sm font-medium">Trenutno rasprodano. Javite se za informacije.</p>
+                </div>
+              ) : product.comingSoon ? (
                 <div className="flex items-center gap-2 pt-2 bg-amber-50 rounded-2xl px-4 py-3">
                   <span className="text-amber-600 text-lg">🕐</span>
                   <p className="text-amber-700 text-sm font-medium">Ovaj proizvod uskoro će biti dostupan za naručivanje.</p>

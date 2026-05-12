@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { products } from '../lib/products';
 import ContactForm from '../components/ContactForm';
+import ReviewsSection from '../components/ReviewsSection';
 
 export default function Home() {
   return (
@@ -158,6 +159,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ReviewsSection />
     </div>
   );
 }
