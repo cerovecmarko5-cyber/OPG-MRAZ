@@ -93,7 +93,9 @@ export default async function RootLayout({
     },
     "servesCuisine": "Domaći likeri i rakija",
     "priceRange": "€€",
-    "sameAs": []
+    "sameAs": [
+      "https://www.google.com/maps/place/Mraz+OPG/@46.0885495,15.9277869,17z/data=!3m1!4b1!4m6!3m5!1s0x4765e8d620290b6f:0x4f26d3fe16e44e6d!8m2!3d46.0885495!4d15.9277869!16s%2Fg%2F11fp8zbf_s"
+    ]
   };
 
   return (

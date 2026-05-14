@@ -19,7 +19,7 @@ interface Product {
 interface OrderItem { product: { name: string; price: number }; quantity: number; }
 interface Order {
   id: string; name: string; email: string; phone: string;
-  address: string; items: OrderItem[]; total: number; created_at: string;
+  address: string; items: OrderItem[]; total: number; created_at: string; status?: string;
 }
 interface AnalyticsData {
   total: number; today: number; week: number; month: number;
@@ -187,6 +187,17 @@ export default function AdminDashboard() {
       setProdError(d.error || 'Greška. Pokušajte ponovo.');
     }
     setProdSubmitting(false);
+  };
+
+  const handleDeleteOrder = async (id: string) => {
+    if (!confirm('Obrisati ovu narudžbu?')) return;
+    await fetch('/api/orders', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    setOrders(prev => prev.filter(o => o.id !== id));
+  };
+
+  const handleMarkDelivered = async (id: string) => {
+    await fetch('/api/orders', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, status: 'delivered' }) });
+    setOrders(prev => prev.map(o => o.id === id ? { ...o, status: 'delivered' } : o));
   };
 
   const handleDeleteProduct = async (id: string) => {
@@ -439,12 +450,19 @@ export default function AdminDashboard() {
                         </div>
                         <div className="text-right flex-shrink-0">
                           <span className="font-bold text-red-700 text-lg">{o.total.toFixed(2)} €</span>
+                          <p className="mt-1">{o.status === 'delivered' ? <span className="text-xs bg-green-100 text-green-700 font-semibold px-2 py-0.5 rounded-full">✅ Isporučeno</span> : <span className="text-xs bg-amber-100 text-amber-700 font-semibold px-2 py-0.5 rounded-full">⏳ U tijeku</span>}</p>
                           <p className="text-xs text-slate-400 mt-0.5">{expandedOrder === o.id ? '▲' : '▼'}</p>
                         </div>
                       </div>
                     </button>
                     {expandedOrder === o.id && (
                       <div className="px-4 pb-4 border-t border-slate-100 pt-3 space-y-1.5">
+                        <div className="flex gap-2 mb-2">
+                          {o.status !== 'delivered' && (
+                            <button onClick={() => handleMarkDelivered(o.id)} className="flex-1 text-sm bg-green-50 text-green-700 py-2 rounded-xl font-medium">✅ Isporučeno</button>
+                          )}
+                          <button onClick={() => handleDeleteOrder(o.id)} className="flex-1 text-sm bg-red-50 text-red-700 py-2 rounded-xl font-medium">🗑️ Obriši</button>
+                        </div>
                         <p className="text-sm text-slate-600">📧 <a href={`mailto:${o.email}`} className="underline">{o.email}</a></p>
                         <p className="text-sm text-slate-600">📞 <a href={`tel:${o.phone}`} className="underline">{o.phone}</a></p>
                         <p className="text-sm text-slate-600">📍 {o.address}</p>

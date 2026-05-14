@@ -2,27 +2,12 @@
 
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { put, list } from '@vercel/blob';
+import { getSupabase } from '../../../lib/supabase';
 
-async function readOrders() {
-  try {
-    const { blobs } = await list({ prefix: 'orders/orders.json' });
-    if (!blobs.length) return [];
-    const res = await fetch(blobs[0].url, { cache: 'no-store' });
-    return await res.json();
-  } catch { return []; }
-}
-
-async function saveOrder(order: object) {
-  try {
-    const orders = await readOrders();
-    (orders as object[]).unshift(order);
-    await put('orders/orders.json', JSON.stringify(orders), {
-      access: 'public', contentType: 'application/json', allowOverwrite: true,
-    });
-  } catch (e) {
-    console.error('Greška pri spremanju narudžbe:', e);
-  }
+async function saveOrder(order: { name: string; email: string; phone: string; address: string; items: object; total: number }) {
+  const supabase = getSupabase();
+  const { error } = await supabase.from('orders').insert(order);
+  if (error) console.error('Greška pri spremanju narudžbe:', error);
 }
 
 const RECIPIENT = "opgmiromraz1904@gmail.com";
@@ -47,8 +32,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Nedostaju obavezna polja" }, { status: 400 });
   }
 
-  // Spremi narudžbu u blob storage
-  await saveOrder({ id: crypto.randomUUID(), name, email, phone, address, items, total, created_at: new Date().toISOString() });
+  // Spremi narudžbu u Supabase
+  await saveOrder({ name, email, phone, address, items, total });
 
   // Email za OPG vlasnika
   const ownerSubject = `Nova narudžba od ${name} - ${total.toFixed(2)} EUR`;

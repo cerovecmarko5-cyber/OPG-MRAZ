@@ -2,27 +2,7 @@ export const runtime = "nodejs";
 
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../auth';
-import { put, list } from '@vercel/blob';
-
-const BLOB_KEY = 'analytics/visits.json';
-const MAX_VISITS = 2000;
-
-interface Visit {
-  page: string;
-  ts: string; // ISO timestamp
-  ref?: string;
-}
-
-async function readVisits(): Promise<Visit[]> {
-  try {
-    const { blobs } = await list({ prefix: BLOB_KEY });
-    if (!blobs.length) return [];
-    const res = await fetch(blobs[0].url, { cache: 'no-store' });
-    return await res.json();
-  } catch {
-    return [];
-  }
-}
+import { getSupabase } from '../../../lib/supabase';
 
 // POST — bilježi posjet (javno, bez autentikacije)
 export async function POST(req: NextRequest) {
@@ -36,14 +16,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true });
     }
 
-    const visits = await readVisits();
-    const newVisit: Visit = { page, ts: new Date().toISOString(), ...(ref ? { ref } : {}) };
-    const updated = [...visits, newVisit].slice(-MAX_VISITS);
-
-    await put(BLOB_KEY, JSON.stringify(updated), {
-      access: 'public',
-      allowOverwrite: true,
-      contentType: 'application/json',
+    const supabase = getSupabase();
+    await supabase.from('visits').insert({
+      page,
+      ref: ref || null,
     });
 
     return NextResponse.json({ ok: true });
@@ -58,27 +34,45 @@ export async function GET() {
   if (!session) return NextResponse.json({ error: 'Nije autorizirano' }, { status: 401 });
 
   try {
-    const visits = await readVisits();
+    const supabase = getSupabase();
     const now = new Date();
 
-    const today = visits.filter(v => {
-      const d = new Date(v.ts);
-      return d.toDateString() === now.toDateString();
-    }).length;
+    // Ukupno
+    const { count: total } = await supabase
+      .from('visits')
+      .select('*', { count: 'exact', head: true });
 
-    const week = visits.filter(v => {
-      const d = new Date(v.ts);
-      return (now.getTime() - d.getTime()) < 7 * 24 * 60 * 60 * 1000;
-    }).length;
+    // Danas
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const { count: today } = await supabase
+      .from('visits')
+      .select('*', { count: 'exact', head: true })
+      .gte('ts', todayStart.toISOString());
 
-    const month = visits.filter(v => {
-      const d = new Date(v.ts);
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-    }).length;
+    // Ovaj tjedan (7 dana)
+    const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const { count: week } = await supabase
+      .from('visits')
+      .select('*', { count: 'exact', head: true })
+      .gte('ts', weekStart.toISOString());
 
-    // Posjeti po stranici
+    // Ovaj mjesec
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const { count: month } = await supabase
+      .from('visits')
+      .select('*', { count: 'exact', head: true })
+      .gte('ts', monthStart.toISOString());
+
+    // Top stranice
+    const { data: allVisits } = await supabase
+      .from('visits')
+      .select('page');
+
     const byPage: Record<string, number> = {};
-    visits.forEach(v => { byPage[v.page] = (byPage[v.page] || 0) + 1; });
+    (allVisits ?? []).forEach((v: { page: string }) => {
+      byPage[v.page] = (byPage[v.page] || 0) + 1;
+    });
     const topPages = Object.entries(byPage)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 8)
@@ -92,20 +86,23 @@ export async function GET() {
       const key = d.toLocaleDateString('hr-HR', { day: 'numeric', month: 'numeric' });
       byDay[key] = 0;
     }
-    visits.forEach(v => {
+    const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+    const { data: recentVisits } = await supabase
+      .from('visits')
+      .select('ts')
+      .gte('ts', fourteenDaysAgo.toISOString());
+
+    (recentVisits ?? []).forEach((v: { ts: string }) => {
       const d = new Date(v.ts);
-      const diff = (now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24);
-      if (diff <= 14) {
-        const key = d.toLocaleDateString('hr-HR', { day: 'numeric', month: 'numeric' });
-        if (key in byDay) byDay[key]++;
-      }
+      const key = d.toLocaleDateString('hr-HR', { day: 'numeric', month: 'numeric' });
+      if (key in byDay) byDay[key]++;
     });
 
     return NextResponse.json({
-      total: visits.length,
-      today,
-      week,
-      month,
+      total: total ?? 0,
+      today: today ?? 0,
+      week: week ?? 0,
+      month: month ?? 0,
       topPages,
       byDay: Object.entries(byDay).map(([date, count]) => ({ date, count })),
     });

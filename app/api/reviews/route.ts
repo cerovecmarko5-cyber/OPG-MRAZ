@@ -1,49 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { put, list, del } from '@vercel/blob';
+import { getSupabase } from '../../../lib/supabase';
 import { auth } from '../../../auth';
 
 export const runtime = 'nodejs';
 
-interface Review {
-  id: string;
-  name: string;
-  rating: number; // 1-5
-  text: string;
-  product?: string;
-  created_at: string;
-  approved: boolean;
-}
-
-async function getReviews(): Promise<Review[]> {
-  try {
-    const { blobs } = await list({ prefix: 'reviews/' });
-    if (!blobs.length) return [];
-    const blob = blobs.sort((a, b) =>
-      new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
-    )[0];
-    const res = await fetch(blob.url);
-    return res.ok ? await res.json() : [];
-  } catch {
-    return [];
-  }
-}
-
-async function saveReviews(reviews: Review[]) {
-  const { blobs } = await list({ prefix: 'reviews/' });
-  for (const b of blobs) await del(b.url);
-  await put('reviews/reviews.json', JSON.stringify(reviews), {
-    access: 'public',
-    contentType: 'application/json',
-  });
-}
-
 // GET — public: approved reviews; admin: all
-export async function GET(req: NextRequest) {
+export async function GET() {
   const session = await auth();
   const isAdmin = !!session;
-  const reviews = await getReviews();
-  const result = isAdmin ? reviews : reviews.filter(r => r.approved);
-  return NextResponse.json(result);
+  const supabase = getSupabase();
+
+  let query = supabase
+    .from('reviews')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (!isAdmin) {
+    query = query.eq('approved', true);
+  }
+
+  const { data, error } = await query;
+  if (error) return NextResponse.json([], { status: 200 });
+  return NextResponse.json(data ?? []);
 }
 
 // POST — submit a new review (public, no auth needed)
@@ -61,18 +39,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Tekst predugačak' }, { status: 400 });
   }
 
-  const reviews = await getReviews();
-  const newReview: Review = {
-    id: Date.now().toString(),
+  const supabase = getSupabase();
+  const { error } = await supabase.from('reviews').insert({
     name: String(name).slice(0, 80),
     rating: Number(rating),
     text: String(text).slice(0, 500),
-    product: product ? String(product).slice(0, 80) : undefined,
-    created_at: new Date().toISOString(),
+    product: product ? String(product).slice(0, 80) : null,
     approved: false,
-  };
-  reviews.unshift(newReview);
-  await saveReviews(reviews);
+  });
+
+  if (error) return NextResponse.json({ error: 'Greška pri slanju' }, { status: 500 });
   return NextResponse.json({ success: true });
 }
 
@@ -82,11 +58,13 @@ export async function PATCH(req: NextRequest) {
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id, approved } = await req.json();
-  const reviews = await getReviews();
-  const idx = reviews.findIndex(r => r.id === id);
-  if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  reviews[idx].approved = approved;
-  await saveReviews(reviews);
+  const supabase = getSupabase();
+  const { error } = await supabase
+    .from('reviews')
+    .update({ approved })
+    .eq('id', id);
+
+  if (error) return NextResponse.json({ error: 'Greška pri ažuriranju' }, { status: 500 });
   return NextResponse.json({ success: true });
 }
 
@@ -96,8 +74,9 @@ export async function DELETE(req: NextRequest) {
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id } = await req.json();
-  const reviews = await getReviews();
-  const filtered = reviews.filter(r => r.id !== id);
-  await saveReviews(filtered);
+  const supabase = getSupabase();
+  const { error } = await supabase.from('reviews').delete().eq('id', id);
+
+  if (error) return NextResponse.json({ error: 'Greška pri brisanju' }, { status: 500 });
   return NextResponse.json({ success: true });
 }
