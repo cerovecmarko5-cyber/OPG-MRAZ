@@ -1,6 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Provjeri postoji li kolona već
 const { error: checkError } = await supabase.from('orders').select('status').limit(1);
@@ -8,21 +11,24 @@ const { error: checkError } = await supabase.from('orders').select('status').lim
 if (!checkError) {
   console.log('✅ Kolona status već postoji!');
 } else {
-  // Pokušaj dodati preko REST API-ja
-  const res = await fetch(`${process.env.SUPABASE_URL}/rest/v1/rpc/exec_sql`, {
+  // Pokušaj dodati via REST API
+  const sql = "ALTER TABLE orders ADD COLUMN IF NOT EXISTS status text DEFAULT 'pending';";
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/exec_sql`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'apikey': process.env.SUPABASE_SERVICE_ROLE_KEY,
-      'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
     },
-    body: JSON.stringify({ sql: "ALTER TABLE orders ADD COLUMN IF NOT EXISTS status text DEFAULT 'pending';" }),
+    body: JSON.stringify({ sql }),
   });
-  
+
   if (res.ok) {
     console.log('✅ Kolona status dodana!');
   } else {
-    console.log('⚠️  Dodaj ručno u Supabase SQL Editor:');
-    console.log("ALTER TABLE orders ADD COLUMN IF NOT EXISTS status text DEFAULT 'pending';");
+    console.log('⚠️  exec_sql RPC nije dostupan.');
+    console.log('Pokreni ovo u Supabase SQL Editoru (https://supabase.com/dashboard):');
+    console.log('');
+    console.log(sql);
   }
 }
