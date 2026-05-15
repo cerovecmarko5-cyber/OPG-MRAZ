@@ -68,36 +68,32 @@ export async function POST() {
     }
   }
 
-  // 4. Unesi hardcoded produkte (ako tablica prazna)
-  const { data: existingProducts, error: countError } = await supabase
-    .from('products')
-    .select('id')
-    .limit(1);
+  // 4. Sync hardcoded produkte u bazu (upsert)
+  const rows = hardcodedProducts.map(p => ({
+    id: p.id,
+    name: p.name,
+    description: p.description,
+    price: p.price,
+    image: p.image,
+    category: p.category,
+    unit: p.unit || 'kom',
+    coming_soon: !!(p.comingSoon),
+    in_stock: p.inStock !== false,
+  }));
 
-  if (!countError && existingProducts && existingProducts.length === 0) {
-    const rows = hardcodedProducts.map(p => ({
-      id: p.id,
-      name: p.name,
-      description: p.description,
-      price: p.price,
-      image: p.image,
-      category: p.category,
-      unit: p.unit || 'kom',
-      coming_soon: !!(p.comingSoon),
-      in_stock: p.inStock !== false,
-    }));
-
-    const { error: insertError } = await supabase.from('products').insert(rows);
-    if (insertError) {
-      results.push(`⚠️ Seed products: ${insertError.message}`);
-    } else {
-      results.push(`✅ Uneseno ${rows.length} proizvoda`);
-    }
-  } else if (existingProducts && existingProducts.length > 0) {
-    results.push(`ℹ️ Produkti već postoje u bazi`);
+  // Obriši sve stare i ubaci nove
+  const { error: deleteError } = await supabase.from('products').delete().neq('id', '__impossible__');
+  if (deleteError) {
+    results.push(`⚠️ Brisanje starih produkata: ${deleteError.message}`);
   } else {
-    results.push(`⚠️ Provjera tablice products: ${countError?.message}`);
-    results.push('ℹ️ Ako tablice ne postoje, pokreni SQL ručno u Supabase SQL Editoru');
+    results.push(`✅ Stari produkti obrisani`);
+  }
+
+  const { error: insertError } = await supabase.from('products').insert(rows);
+  if (insertError) {
+    results.push(`⚠️ Seed products: ${insertError.message}`);
+  } else {
+    results.push(`✅ Uneseno ${rows.length} proizvoda`);
   }
 
   return NextResponse.json({ results });
