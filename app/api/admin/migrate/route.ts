@@ -1,41 +1,104 @@
 import { NextResponse } from 'next/server';
 import { auth } from '../../../../auth';
 import { getSupabase } from '../../../../lib/supabase';
+import { products as hardcodedProducts } from '../../../../lib/products';
 
 export async function POST() {
   const session = await auth();
   if (!session) return NextResponse.json({ error: 'Nije autorizirano' }, { status: 401 });
 
   const supabase = getSupabase();
+  const results: string[] = [];
 
-  // Provjeri postoji li kolona
-  const { error: checkError } = await supabase.from('orders').select('status').limit(1);
-  if (!checkError) {
-    return NextResponse.json({ ok: true, message: 'Kolona status već postoji' });
-  }
+  // 1. Kreiraj tablicu posts
+  const createPostsSQL = `
+    CREATE TABLE IF NOT EXISTS posts (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      title TEXT NOT NULL,
+      content TEXT NOT NULL,
+      image_url TEXT,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `;
 
-  // Dodaj kolonu direktno kroz Supabase Admin API
+  // 2. Kreiraj tablicu products
+  const createProductsSQL = `
+    CREATE TABLE IF NOT EXISTS products (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      description TEXT,
+      price NUMERIC(10, 2) NOT NULL,
+      image TEXT,
+      category TEXT DEFAULT 'Likeri',
+      unit TEXT DEFAULT 'kom',
+      coming_soon BOOLEAN DEFAULT FALSE,
+      in_stock BOOLEAN DEFAULT TRUE,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
+  `;
+
+  // Pokušaj kreirati tablice
   const supabaseUrl = process.env.SUPABASE_URL!;
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-  const res = await fetch(`${supabaseUrl}/rest/v1/rpc/exec_sql`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': supabaseKey,
-      'Authorization': `Bearer ${supabaseKey}`,
-    },
-    body: JSON.stringify({ sql: "ALTER TABLE orders ADD COLUMN IF NOT EXISTS status text DEFAULT 'pending';" }),
-  });
-
-  if (res.ok) {
-    return NextResponse.json({ ok: true, message: 'Kolona status uspješno dodana!' });
+  for (const [name, sql] of [['posts', createPostsSQL], ['products', createProductsSQL]]) {
+    const res = await fetch(`${supabaseUrl}/rest/v1/rpc/exec_sql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`,
+      },
+      body: JSON.stringify({ sql }),
+    });
+    if (res.ok) {
+      results.push(`✅ Tablica ${name} kreirana`);
+    } else {
+      results.push(`⚠️ Tablica ${name}: ${await res.text()}`);
+    }
   }
 
-  // Ako rpc ne radi, vrati SQL za ručno izvršavanje
-  return NextResponse.json({
-    ok: false,
-    message: 'Pokreni ovo u Supabase SQL Editoru:',
-    sql: "ALTER TABLE orders ADD COLUMN IF NOT EXISTS status text DEFAULT 'pending';"
-  });
+  // 3. Kreiraj Storage buckete
+  for (const bucket of ['post-images', 'product-images']) {
+    const { error } = await supabase.storage.createBucket(bucket, { public: true });
+    if (!error || error.message?.includes('already exists')) {
+      results.push(`✅ Bucket ${bucket} postoji`);
+    } else {
+      results.push(`⚠️ Bucket ${bucket}: ${error.message}`);
+    }
+  }
+
+  // 4. Unesi hardcoded produkte (ako tablica prazna)
+  const { data: existingProducts, error: countError } = await supabase
+    .from('products')
+    .select('id')
+    .limit(1);
+
+  if (!countError && existingProducts && existingProducts.length === 0) {
+    const rows = hardcodedProducts.map(p => ({
+      id: p.id,
+      name: p.name,
+      description: p.description,
+      price: p.price,
+      image: p.image,
+      category: p.category,
+      unit: p.unit || 'kom',
+      coming_soon: !!(p.comingSoon),
+      in_stock: p.inStock !== false,
+    }));
+
+    const { error: insertError } = await supabase.from('products').insert(rows);
+    if (insertError) {
+      results.push(`⚠️ Seed products: ${insertError.message}`);
+    } else {
+      results.push(`✅ Uneseno ${rows.length} proizvoda`);
+    }
+  } else if (existingProducts && existingProducts.length > 0) {
+    results.push(`ℹ️ Produkti već postoje u bazi`);
+  } else {
+    results.push(`⚠️ Provjera tablice products: ${countError?.message}`);
+    results.push('ℹ️ Ako tablice ne postoje, pokreni SQL ručno u Supabase SQL Editoru');
+  }
+
+  return NextResponse.json({ results });
 }

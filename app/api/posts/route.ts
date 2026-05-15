@@ -1,32 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../auth';
-import { put, list } from '@vercel/blob';
-
-const POSTS_BLOB = 'posts/posts.json';
-
-async function readPosts() {
-  try {
-    const { blobs } = await list({ prefix: 'posts/posts.json' });
-    if (!blobs.length) return [];
-    const res = await fetch(blobs[0].url, { cache: 'no-store' });
-    return await res.json();
-  } catch {
-    return [];
-  }
-}
-
-async function writePosts(posts: object[]) {
-  await put(POSTS_BLOB, JSON.stringify(posts), {
-    access: 'public',
-    contentType: 'application/json',
-    allowOverwrite: true,
-  });
-}
+import { getSupabase } from '../../../lib/supabase';
 
 // GET - dohvati sve objave (javno)
 export async function GET() {
-  const posts = await readPosts();
-  return NextResponse.json(posts);
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) return NextResponse.json([]);
+    return NextResponse.json(data || []);
+  } catch {
+    return NextResponse.json([]);
+  }
 }
 
 // POST - dodaj novu objavu (samo admin)
@@ -39,28 +27,31 @@ export async function POST(req: NextRequest) {
   const content = formData.get('content') as string;
   const imageFile = formData.get('image') as File | null;
 
+  const supabase = getSupabase();
   let image_url: string | null = null;
 
   if (imageFile && imageFile.size > 0) {
     const fileExt = imageFile.name.split('.').pop();
-    const fileName = `posts/images/${Date.now()}.${fileExt}`;
-    const blob = await put(fileName, imageFile, {
-      access: 'public',
-      allowOverwrite: true,
-    });
-    image_url = blob.url;
+    const fileName = `${Date.now()}.${fileExt}`;
+    const arrayBuffer = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('post-images')
+      .upload(fileName, buffer, { contentType: imageFile.type, upsert: true });
+    if (!uploadError && uploadData) {
+      const { data: urlData } = supabase.storage
+        .from('post-images')
+        .getPublicUrl(uploadData.path);
+      image_url = urlData.publicUrl;
+    }
   }
 
-  const posts = await readPosts();
-  const newPost = {
-    id: crypto.randomUUID(),
-    title,
-    content,
-    image_url,
-    created_at: new Date().toISOString(),
-  };
-  posts.unshift(newPost);
-  await writePosts(posts);
+  const { data, error } = await supabase
+    .from('posts')
+    .insert({ title, content, image_url })
+    .select()
+    .single();
 
-  return NextResponse.json(newPost);
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json(data);
 }
