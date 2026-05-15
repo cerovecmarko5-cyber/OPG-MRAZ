@@ -33,6 +33,38 @@ interface Review {
 
 const CATEGORIES = ['Likeri', 'Rakija', 'EKO', 'Poklon paketi'];
 
+function SyncProductsButton({ onDone }: { onDone: () => void }) {
+  const [status, setStatus] = useState<'idle' | 'loading' | 'ok' | 'err'>('idle');
+  const [msg, setMsg] = useState('');
+  const sync = async () => {
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/admin/migrate', { method: 'POST' });
+      const data = await res.json();
+      setMsg(data.results?.join('\n') || JSON.stringify(data));
+      setStatus('ok');
+      onDone();
+    } catch (e) {
+      setMsg(String(e));
+      setStatus('err');
+    }
+  };
+  return (
+    <div>
+      <button
+        onClick={sync}
+        disabled={status === 'loading'}
+        className="bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-xl disabled:opacity-50"
+      >
+        {status === 'loading' ? 'Sinkronizira...' : '🔄 Sync produkte iz koda'}
+      </button>
+      {msg && (
+        <pre className="mt-3 text-xs text-slate-600 bg-slate-50 rounded-xl p-3 whitespace-pre-wrap">{msg}</pre>
+      )}
+    </div>
+  );
+}
+
 function Toggle({ on, onToggle, colorOn = 'bg-green-500' }: { on: boolean; onToggle: () => void; colorOn?: string }) {
   return (
     <button type="button" onClick={onToggle}
@@ -602,6 +634,13 @@ export default function AdminDashboard() {
             </div>
           </>
         )}
+
+        {/* ADMIN ALATI */}
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-3">Admin alati</p>
+        <div className="bg-white rounded-2xl shadow-sm p-4">
+          <p className="text-sm text-slate-600 mb-3">Sinkronizira produkte iz baze s najnovijim hardcoded popisom (briše stare i ubacuje nove).</p>
+          <SyncProductsButton onDone={fetchProducts} />
+        </div>
       </>
     );
   };
