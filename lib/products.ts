@@ -153,7 +153,7 @@ export const products: Product[] = [
     image: '/products/haskap-svjezi.jpg',
     category: 'EKO',
     unit: '1kg',
-    comingSoon: true,
+    comingSoon: false,
   },
   // EKO Ocat od Mandarine
   {
