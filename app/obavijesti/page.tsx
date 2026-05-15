@@ -1,5 +1,7 @@
 export const dynamic = 'force-dynamic';
 
+import { getSupabase } from '../../lib/supabase';
+
 interface Post {
   id: string;
   title: string;
@@ -10,10 +12,13 @@ interface Post {
 
 async function getPosts(): Promise<Post[]> {
   try {
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/posts`, { cache: 'no-store' });
-    if (!res.ok) return [];
-    return res.json();
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) return [];
+    return data || [];
   } catch {
     return [];
   }
