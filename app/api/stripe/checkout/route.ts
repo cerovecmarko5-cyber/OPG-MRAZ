@@ -3,10 +3,6 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-04-22.dahlia",
-});
-
 export const DELIVERY_OPTIONS = [
   { id: "gls", name: "GLS dostava (2-3 radna dana)", price: 4.0 },
   { id: "hp", name: "Hrvatska pošta (3-5 radnih dana)", price: 3.5 },
@@ -28,6 +24,10 @@ type Payload = {
 };
 
 export async function POST(request: Request) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-04-22.dahlia",
+  });
+
   let payload: Payload;
   try {
     payload = await request.json();

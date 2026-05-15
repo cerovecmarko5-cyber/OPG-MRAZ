@@ -5,10 +5,6 @@ import Stripe from "stripe";
 import { Resend } from "resend";
 import { getSupabase } from "../../../../lib/supabase";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-04-22.dahlia",
-});
-
 const RECIPIENT = "opgmiromraz1904@gmail.com";
 
 type ParsedItem = { name: string; qty: number; price: number };
@@ -25,6 +21,10 @@ const formatItemsHtml = (items: ParsedItem[]) =>
     .join("");
 
 export async function POST(request: Request) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-04-22.dahlia",
+  });
+
   const sig = request.headers.get("stripe-signature");
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
